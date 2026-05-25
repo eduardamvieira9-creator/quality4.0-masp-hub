@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Quality - MASP Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans">
+
+    <header class="bg-slate-800 border-b border-slate-700 p-4 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-red-500 flex items-center justify-center text-white font-black shadow-lg shadow-red-500/20">
+                    <i class="fa-solid fa-triangle-exclamation text-xl animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-wider text-white">SMART QUALITY // SYSTEMS HUB</h1>
+                    <p class="text-xs text-slate-400 font-mono">SISTEMA INTELIGENTE DE GESTÃO DE NÃO-CONFORMIDADES (RNC)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-mono px-2.5 py-1 rounded font-bold uppercase tracking-wider">
+                    ISO 9001 / MASP PREDITIVO
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <section class="max-w-7xl mx-auto p-4 md:p-6 pb-0 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between shadow-sm">
+            <div>
+                <span class="text-[10px] uppercase text-slate-400 font-bold font-mono tracking-wider">RNCs em Aberto na Planta</span>
+                <div class="text-2xl font-black text-red-400 font-mono mt-0.5" id="kpi-ativas">2</div>
+            </div>
+            <i class="fa-solid fa-folder-open text-slate-600 text-2xl"></i>
+        </div>
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between shadow-sm">
+            <div>
+                <span class="text-[10px] uppercase text-slate-400 font-bold font-mono tracking-wider">Tempo Médio de Resolução</span>
+                <div class="text-2xl font-black text-amber-400 font-mono mt-0.5">3.8 <span class="text-xs font-sans text-slate-400">horas</span></div>
+            </div>
+            <i class="fa-solid fa-clock text-slate-600 text-2xl"></i>
+        </div>
+        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between shadow-sm">
+            <div>
+                <span class="text-[10px] uppercase text-slate-400 font-bold font-mono tracking-wider">Eficácia de Bloqueio</span>
+                <div class="text-2xl font-black text-emerald-400 font-mono mt-0.5" id="kpi-eficacia">94.8%</div>
+            </div>
+            <i class="fa-solid fa-square-check text-slate-600 text-2xl"></i>
+        </div>
+    </section>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <section class="lg:col-span-5 space-y-6">
+            <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-4">
+                <div class="border-b border-slate-700 pb-3">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square text-red-400"></i> Registro de Desvio Técnico
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Insira os dados iniciais do defeito encontrado na linha.</p>
+                </div>
+
+                <div class="space-y-3.5 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-300 uppercase tracking-wider mb-1">Modelo de Equipamento / Linha</label>
+                        <select id="rnc-ativo" onchange="buscarRncSimilares()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-red-500 cursor-pointer font-medium">
+                            <option value="Equipamento Linha Pesada A">Equipamento Linha Pesada A (Módulos Hidráulicos)</option>
+                            <option value="Equipamento Linha Pesada B">Equipamento Linha Pesada B (Sistemas de Giro)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-300 uppercase tracking-wider mb-1">Posto de Trabalho afetado</label>
+                        <input type="text" id="rnc-posto" placeholder="Ex: Posto 02 - Montagem de Subconjuntos" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-red-500">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-300 uppercase tracking-wider mb-1">Descrição Clara do Defeito</label>
+                        <textarea id="rnc-descricao" rows="3" placeholder="Descreva o problema encontrado (Ex: Oscilação no sinal elétrico ou falha de estanqueidade)..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-red-500 leading-relaxed"></textarea>
+                    </div>
+
+                    <button onclick="abrirRNC()" class="w-full bg-red-600 hover:bg-red-500 text-white font-black py-3 rounded-lg transition-all shadow-md shadow-red-600/10 uppercase tracking-wider cursor-pointer">
+                        <i class="fa-solid fa-play mr-1"></i> Abrir RNC & Cruzar Dados Históricos
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-3">
+                <div class="border-b border-slate-700 pb-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group"></i> Banco de Dados: Ocorrências Similares
+                    </h3>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Cruzamento inteligente com o histórico de falhas da planta.</p>
+                </div>
+                
+                <div id="container-similares" class="space-y-2 text-xs">
+                    </div>
+            </div>
+        </section>
+
+        <section class="lg:col-span-7 bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg flex flex-col justify-between min-h-[500px]">
+            <div class="space-y-4">
+                <div class="border-b border-slate-700 pb-3 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                            <i class="fa-solid fa-diagram-predecessor text-amber-400"></i> Investigação de Causa Raiz (5 Porquês)
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Utilize os dados históricos ao lado para guiar a análise.</p>
+                    </div>
+                    <span id="status-analise" class="bg-slate-900 text-slate-500 border border-slate-700 px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase">Aguardando</span>
+                </div>
+
+                <div id="investigacao-container" class="space-y-3 opacity-40 pointer-events-none transition-all duration-300">
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-750 flex items-center gap-3">
+                        <span class="font-mono font-black text-amber-400 text-xs bg-slate-850 px-2 py-1 rounded border border-slate-700">1º Porquê?</span>
+                        <input type="text" id="pq-1" placeholder="Por que o defeito relatado aconteceu?" class="flex-1 bg-transparent border-b border-slate-700 focus:outline-none focus:border-amber-500 text-xs text-slate-200">
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-750 flex items-center gap-3">
+                        <span class="font-mono font-black text-amber-400 text-xs bg-slate-850 px-2 py-1 rounded border border-slate-700">2º Porquê?</span>
+                        <input type="text" id="pq-2" placeholder="Por que o motivo acima ocorreu?" class="flex-1 bg-transparent border-b border-slate-700 focus:outline-none focus:border-amber-500 text-xs text-slate-200">
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-750 flex items-center gap-3">
+                        <span class="font-mono font-black text-amber-400 text-xs bg-slate-850 px-2 py-1 rounded border border-slate-700">3º Porquê?</span>
+                        <input type="text" id="pq-3" placeholder="Por que chegamos nessa condição?" class="flex-1 bg-transparent border-b border-slate-700 focus:outline-none focus:border-amber-500 text-xs text-slate-200">
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-750 flex items-center gap-3">
+                        <span class="font-mono font-black text-amber-400 text-xs bg-slate-850 px-2 py-1 rounded border border-slate-700">4º Porquê?</span>
+                        <input type="text" id="pq-4" placeholder="Qual a origem dessa situação?" class="flex-1 bg-transparent border-b border-slate-700 focus:outline-none focus:border-amber-500 text-xs text-slate-200">
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg border border-slate-750 flex items-center gap-3">
+                        <span class="font-mono font-black text-emerald-400 text-xs bg-slate-850 px-2 py-1 rounded border border-slate-700">5º Causa Raiz</span>
+                        <input type="text" id="pq-5" placeholder="A causa fundamental incontestável (Onde o processo falhou)." class="flex-1 bg-transparent border-b border-slate-700 focus:outline-none focus:border-emerald-500 text-xs text-slate-200 font-bold text-emerald-400">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-700 mt-4">
+                <button id="btn-concluir" onclick="concluirRNC()" disabled class="w-full bg-slate-700 text-slate-400 font-black text-xs py-3 rounded-lg uppercase tracking-wider cursor-not-allowed transition-all">
+                    <i class="fa-solid fa-check-double mr-1"></i> Validar Investigação e Registrar Ação
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="max-w-7xl mx-auto p-6 text-center text-[10px] font-mono text-slate-500 border-t border-slate-800 mt-6">
+        Desenvolvimento de Projeto Quality 4.0 // Integração MASP & Gestão de Dados de Chão de Fábrica // 2026
+    </footer>
+
+    <script>
+        const bancoHistoricoRnc = {
+            "Equipamento Linha Pesada A": [
+                { id: "RNC-2026-089", status: "ABERTA", posto: "Posto 02", desvio: "Vazamento por micro-fissura em conexão hidráulica de pressão.", criticidade: "Alta" },
+                { id: "RNC-2025-412", status: "FECHADA", posto: "Posto 02", desvio: "Torque fora do padrão homologado. Causa: Descalibração mecânica do dispositivo de aperto.", criticidade: "Média" }
+            ],
+            "Equipamento Linha Pesada B": [
+                { id: "RNC-2026-044", status: "ABERTA", posto: "Posto 04", desvio: "Intermitência de sinal elétrico no sensor de posicionamento angular.", criticidade: "Crítica" }
+            ]
+        };
+
+        function buscarRncSimilares() {
+            const ativo = document.getElementById('rnc-ativo').value;
+            const container = document.getElementById('container-similares');
+            container.innerHTML = "";
+
+            if(!bancoHistoricoRnc[ativo]) return;
+
+            bancoHistoricoRnc[ativo].forEach(rnc => {
+                const div = document.createElement('div');
+                const badgeCor = rnc.status === "ABERTA" ? "bg-red-500/10 text-red-400 border-red-500/20 animate-pulse" : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+                
+                div.className = "p-3 bg-slate-900 rounded-lg border border-slate-750 space-y-1.5";
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-mono font-bold text-slate-300">${rnc.id} [${rnc.posto}]</span>
+                        <span class="border text-[9px] font-black px-1.5 py-0.5 rounded font-mono ${badgeCor}">${rnc.status}</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">${rnc.desvio}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function abrirRNC() {
+            const posto = document.getElementById('rnc-posto').value.trim();
+            const desc = document.getElementById('rnc-descricao').value.trim();
+
+            if (!posto || !desc) {
+                alert("Preencha o posto de trabalho e a descrição para simular o cruzamento de dados.");
+                return;
+            }
+
+            document.getElementById('kpi-ativas').innerText = "3";
+
+            const badgeStatus = document.getElementById('status-analise');
+            badgeStatus.className = "bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase animate-pulse";
+            badgeStatus.innerText = "Em Investigação Ativa";
+
+            document.getElementById('investigacao-container').classList.remove('opacity-40', 'pointer-events-none');
+            
+            const btn = document.getElementById('btn-concluir');
+            btn.disabled = false;
+            btn.className = "w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-3 rounded-lg uppercase tracking-wider cursor-pointer shadow-md";
+
+            document.getElementById('pq-1').focus();
+        }
+
+        function concluirRNC() {
+            const q1 = document.getElementById('pq-1').value.trim();
+            const q5 = document.getElementById('pq-5').value.trim();
+
+            if (!q1 || !q5) {
+                alert("Complete a análise até o 5º Porquê (Causa Raiz) para validar o encerramento.");
+                return;
+            }
+
+            document.getElementById('kpi-ativas').innerText = "2";
+
+            const badgeStatus = document.getElementById('status-analise');
+            badgeStatus.className = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase";
+            badgeStatus.innerText = "RNC Validada e Homologada";
+
+            document.getElementById('investigacao-container').classList.add('opacity-50', 'pointer-events-none');
+
+            const btn = document.getElementById('btn-concluir');
+            btn.disabled = true;
+            btn.className = "w-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-black text-xs py-3 rounded-lg uppercase tracking-wider cursor-not-allowed";
+            btn.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Contramedida homologada no Sistema da Qualidade';
+        }
+
+        window.onload = buscarRncSimilares;
+    </script>
+</body>
+</html>
